@@ -1,0 +1,10 @@
+- hosts: worker
+  become: true
+
+  tasks:
+
+  - name: Pull docker image
+    command: docker pull <dockerhub-username>/static-web:latest
+
+  - name: Run docker container
+    command: docker run -d -p 8085:80 --name webapp <dockerhub-username>/static-web:latest
