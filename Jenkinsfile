@@ -19,12 +19,6 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
-            steps {
-                sh 'docker login -u zaidmohammad038 -p YOUR_PASSWORD'
-            }
-        }
-
         stage('Push Image') {
             steps {
                 sh 'docker push zaidmohammad038/static-web'
