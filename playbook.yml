@@ -3,8 +3,12 @@
 
   tasks:
 
-  - name: Pull Docker Image
-    command: docker pull zaidmohammad038/static-web:latest
+  - name: Pull latest image
+    command: docker pull zaidmohammad038/static-web
 
-  - name: Run Docker Container
-    command: docker run -d -p 8085:80 --name webapp zaidmohammad038/static-web:latest
+  - name: Stop existing container
+    command: docker rm -f webapp
+    ignore_errors: yes
+
+  - name: Run container
+    command: docker run -d -p 8085:80 --name webapp zaidmohammad038/static-web
