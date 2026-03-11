@@ -1,5 +1,9 @@
-- hosts: worker
+---
+- name: docker operation using jenkins
+  hosts: dev
+  user: ansible
   become: true
+  connection: ssh
 
   tasks:
 
