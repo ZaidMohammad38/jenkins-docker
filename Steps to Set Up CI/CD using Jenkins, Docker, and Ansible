@@ -1,0 +1,153 @@
+Steps to Set Up CI/CD for Static Web App Using Jenkins, Docker, and Ansible
+1. Prepare Jenkins Server
+
+Install Jenkins on your server (Master).
+
+Install necessary plugins:
+
+Git
+
+Pipeline
+
+Ansible (optional, if you want to run playbooks from Jenkins)
+
+Ensure Jenkins user can run Docker commands:
+
+Add Jenkins to Docker group:
+
+sudo usermod -aG docker jenkins
+
+Restart Jenkins or logout/login.
+
+Enable passwordless sudo for Jenkins if needed:
+
+jenkins ALL=(ALL) NOPASSWD:ALL
+2. Prepare Worker Node
+
+Install Docker on worker node.
+
+Create a user ansible (or any non-root user for SSH):
+
+sudo adduser ansible
+
+Add ansible user to Docker group:
+
+sudo usermod -aG docker ansible
+
+Enable passwordless sudo for ansible user:
+
+ansible ALL=(ALL) NOPASSWD:ALL
+3. SSH Key Setup
+
+On Jenkins server, generate SSH keys (if not present):
+
+ssh-keygen -t ed25519 -C "jenkins@server"
+
+Copy public key to worker node:
+
+ssh-copy-id -i ~/.ssh/id_ed25519 ansible@<worker-ip>
+
+Test SSH access:
+
+ssh -i ~/.ssh/id_ed25519 ansible@<worker-ip>
+4. Docker Hub Setup
+
+Create a Docker Hub account.
+
+Create a repository (e.g., static-web).
+
+Test Docker login from Jenkins:
+
+docker login -u <docker-username>
+5. GitHub Repository
+
+Create a GitHub repository for your project (e.g., project-repo).
+
+Add your static web app files (HTML, CSS, JS) and Dockerfile.
+
+Dockerfile Example:
+
+FROM nginx:latest
+COPY src/ /usr/share/nginx/html
+EXPOSE 80
+6. Jenkins Pipeline
+
+Create a Jenkins pipeline job.
+
+Set SCM to your GitHub repository.
+
+Use a Jenkinsfile like:
+
+pipeline {
+    agent any
+    environment { ANSIBLE_HOST_KEY_CHECKING = 'False' }
+    stages {
+        stage('Clone Repo') {
+            steps { git branch: 'main', url: 'https://github.com/<github-username>/project-repo.git' }
+        }
+        stage('Build Docker Image') {
+            steps { sh 'docker build -t <docker-username>/static-web .' }
+        }
+        stage('Docker Login') {
+            steps { sh 'docker login -u <docker-username>' }
+        }
+        stage('Push Image') {
+            steps { sh 'docker push <docker-username>/static-web' }
+        }
+        stage('Deploy using Ansible') {
+            steps { sh 'ansible-playbook -i inventory playbook.yml' }
+        }
+    }
+}
+7. Ansible Setup
+
+Create an inventory file:
+
+[dev]
+<worker-ip> ansible_user=ansible ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/id_ed25519
+
+Create playbook.yml to deploy Docker container:
+
+- name: docker operation using jenkins
+  hosts: dev
+  user: ansible
+  become: true
+  connection: ssh
+
+  tasks:
+    - name: Pull latest image
+      command: docker pull <docker-username>/static-web
+
+    - name: Stop existing container
+      command: docker rm -f webapp
+      ignore_errors: yes
+
+    - name: Run container
+      command: docker run -d -p 8085:80 --name webapp <docker-username>/static-web
+8. Testing the Pipeline
+
+Trigger the Jenkins pipeline.
+
+Jenkins stages:
+
+Clone repo
+
+Build Docker image
+
+Login & Push to Docker Hub
+
+Run Ansible playbook on worker node
+
+Check the web app in browser:
+
+http://<worker-ip>:8085
+
+✅ Important Notes
+
+Make sure Docker is running on both Jenkins and worker nodes.
+
+Make sure SSH keys are correct and accessible by Jenkins.
+
+Do not hardcode your personal usernames or passwords in the Jenkinsfile; use environment variables if possible.
+
+Test each stage separately before running full pipeline.
