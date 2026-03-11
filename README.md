@@ -5,6 +5,7 @@ This project demonstrates a simple DevOps CI/CD pipeline where Jenkins builds a 
 The pipeline automatically builds and deploys a static web application using Nginx.
 
 🏗 Architecture
+
 Developer
    │
    ▼
@@ -24,6 +25,7 @@ Worker Server
    │
    ▼
 Docker Container (Nginx Web App)
+
 ⚙️ Technologies Used
 
 Jenkins – Continuous Integration
@@ -46,6 +48,8 @@ jenkins-docker/
 │
 └── src/
      └── index.html
+
+     
 🔧 Jenkins Pipeline Stages
 1️⃣ Clone Repository
 
@@ -56,7 +60,7 @@ git clone repository
 
 Jenkins builds a Docker image using the Dockerfile.
 
-docker build -t <dockerhub-username>/static-web .
+
 3️⃣ Push Image to Docker Hub
 
 The Docker image is pushed to Docker Hub.
@@ -66,7 +70,7 @@ docker push <dockerhub-username>/static-web
 
 Jenkins triggers an Ansible playbook which connects to the worker server via SSH and deploys the container.
 
-ansible-playbook -i inventory playbook.yml
+
 📜 Ansible Playbook
 
 The playbook performs the following steps on the worker node:
@@ -77,36 +81,6 @@ Stop existing container
 
 Run new container
 
----
-- name: docker operation using jenkins
-  hosts: dev
-  user: ansible
-  become: true
-  connection: ssh
-
-  tasks:
-
-  - name: Pull latest image
-    command: docker pull zaidmohammad038/static-web
-
-  - name: Stop existing container
-    command: docker rm -f webapp
-    ignore_errors: yes
-
-  - name: Run container
-    command: docker run -d -p 8085:80 --name webapp zaidmohammad038/static-web
-📦 Dockerfile
-FROM nginx:latest
-COPY src/ /usr/share/nginx/html
-EXPOSE 80
-
-This image runs a static website using Nginx.
-
-🖥 Inventory File
-[dev]
-172.31.0.136 ansible_user=ansible ansible_ssh_private_key_file=/var/lib/jenkins/.ssh/id_ed25519
-
-This allows Ansible to SSH into the worker node.
 
 🌐 Application Access
 
@@ -140,8 +114,6 @@ This allows passwordless login.
 5️⃣ Jenkins runs Ansible playbook
 6️⃣ Worker node deploys container
 
-stage view:
-<img width="1178" height="811" alt="image" src="https://github.com/user-attachments/assets/661350ce-2c01-4194-99b2-77c788f054b8" />
 
 🎯 Outcome
 
@@ -149,3 +121,10 @@ stage view:
 ✔ Docker image build and push
 ✔ Automated deployment using Ansible
 ✔ Application deployed on remote server
+
+
+stage view:
+<img width="1178" height="811" alt="image" src="https://github.com/user-attachments/assets/661350ce-2c01-4194-99b2-77c788f054b8" />
+
+deployed application:
+<img width="1917" height="931" alt="image" src="https://github.com/user-attachments/assets/cb7b9cf4-5aae-482e-a095-e3d3bd8579ca" />
