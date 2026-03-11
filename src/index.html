@@ -1,11 +1,176 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>DevOps Project</title>
+<meta charset="UTF-8">
+<title>MovieHub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    background:#0f172a;
+    color:white;
+}
+
+header{
+    background:#020617;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+header h1{
+    color:#ff4c4c;
+    margin:0;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#ff4c4c;
+}
+
+.hero{
+    height:400px;
+    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.8)),
+    url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba");
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.hero h2{
+    font-size:40px;
+}
+
+.hero button{
+    padding:12px 25px;
+    border:none;
+    background:#ff4c4c;
+    color:white;
+    font-size:16px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.hero button:hover{
+    background:#ff2e2e;
+}
+
+.section{
+    padding:40px;
+}
+
+.movies{
+    display:flex;
+    flex-wrap:wrap;
+    gap:25px;
+    justify-content:center;
+}
+
+.card{
+    background:#1e293b;
+    width:200px;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,0.5);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.card img{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+}
+
+.card h3{
+    padding:10px;
+    margin:0;
+}
+
+footer{
+    background:#020617;
+    padding:20px;
+    text-align:center;
+    margin-top:40px;
+}
+
+</style>
 </head>
 
 <body>
-<h1>Static Website using Jenkins + Ansible + Docker</h1>
-</body>
 
+<header>
+<h1>MovieHub</h1>
+<nav>
+<a href="#">Home</a>
+<a href="#">Movies</a>
+<a href="#">Trending</a>
+<a href="#">Genres</a>
+<a href="#">Login</a>
+</nav>
+</header>
+
+<div class="hero">
+<h2>Unlimited Movies, TV Shows & Entertainment</h2>
+<p>Watch the latest movies anytime, anywhere.</p>
+<button>Start Watching</button>
+</div>
+
+<div class="section">
+
+<h2 style="text-align:center;">Trending Movies</h2>
+
+<div class="movies">
+
+<div class="card">
+<img src="https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg">
+<h3>Avengers</h3>
+</div>
+
+<div class="card">
+<img src="https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg">
+<h3>Joker</h3>
+</div>
+
+<div class="card">
+<img src="https://image.tmdb.org/t/p/w500/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg">
+<h3>Spider-Man</h3>
+</div>
+
+<div class="card">
+<img src="https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg">
+<h3>Infinity War</h3>
+</div>
+
+<div class="card">
+<img src="https://image.tmdb.org/t/p/w500/xBHvZcjRiWyobQ9kxBhO6B2dtRI.jpg">
+<h3>Interstellar</h3>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+© 2026 MovieHub | All Rights Reserved
+</footer>
+
+</body>
 </html>
